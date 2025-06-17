@@ -45,7 +45,6 @@ jobs:
       - name: Start runner
         id: test-action
         uses: Use-Tusk/test-runner@v1
-        # See https://github.com/Use-Tusk/test-runner for full details and examples.
         with:
           # Required for the test runner, do not remove this input
           runId: ${{ github.event.inputs.runId }}
@@ -74,19 +73,15 @@ jobs:
           testFileRegex: '^tests/test_.*\.py$'
 
           # The script to run to lint the code (adapt accordingly).
-          # This should be a command that fixes lint errors, not just checking for them.
           # {{file}} placeholder is required and will be replaced by Tusk with the file being linted.
           # If you don't have a lint command, you can remove this input.
-          # Example (Python w/ black): "black {{file}}"
-          # Example (TypeScript w/ prettier + eslint): "npx prettier --write {{file}} && npx eslint --fix {{file}}"
-          # If you need to run a compilation check (e.g. tsc), contact support@usetusk.ai to ensure it is set up correctly.
-          lintScript: "black {{file}}"
+          # e.g. for a Python project, this would be "black {{file}}"
+          lintScript: ". myenv/bin/activate && black {{file}}"
 
           # The script to run to test the code (adapt accordingly). Required for the test runner.
           # {{file}} placeholder is required and will be replaced by Tusk with the file being tested.
-          # Example (pytest): "pytest {{file}}"
-          # If your test output is known to contain a lot of console logs, we recommend suppressing these logs (e.g., use --silent / --quiet flags or equivalent).
-          testScript: "pytest {{file}}"
+          # e.g. for a Python project, this would be "pytest {{file}}"
+          testScript: ". myenv/bin/activate && pytest {{file}}"
 
           # The runner may run tests in parallel.
           # Set this value to 1 if you know that your tests should not be run concurrently.
